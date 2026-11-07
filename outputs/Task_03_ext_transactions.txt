@@ -1,0 +1,11 @@
+PART 1 - speed-up versus number of values
+N=    1,000: loop=0.00014s  vectorized=0.000007s  speed-up=21x
+N=  100,000: loop=0.01339s  vectorized=0.000797s  speed-up=17x
+N=1,000,000: loop=0.13670s  vectorized=0.002474s  speed-up=55x
+
+PART 2 - transactions
+Results identical: True
+Total fees collected: 11,674,873 KES
+Average fee: 11.67 KES (1.06% of money moved)
+Transactions hitting the fee cap: 3,332
+Loop time: 0.2197 s | Vectorized: 0.0060 s | Speed-up: 37x

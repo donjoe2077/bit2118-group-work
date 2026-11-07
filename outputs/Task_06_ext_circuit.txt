@@ -1,0 +1,15 @@
+PART 1 - server problem with new totals
+b=[20.0, 72.0]: A=3.000, B=4.000
+b=[22.0, 80.0]: A=3.250, B=4.500
+The second answer is not whole numbers, so those totals cannot come from whole servers.
+det of dependent system: 0.0
+Singular system -> Singular matrix
+
+PART 2 - mesh currents
+I1 = 547.706 mA
+I2 = 112.844 mA
+I3 = -57.798 mA
+Residual norm: 7.632783294297951e-17
+Current through shared resistor R4 (I1-I2): 434.862 mA
+Current through shared resistor R5 (I2-I3): 170.642 mA
+Condition number of the matrix: 5.08 (small = well-behaved)

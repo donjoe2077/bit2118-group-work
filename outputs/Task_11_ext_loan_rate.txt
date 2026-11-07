@@ -1,0 +1,14 @@
+PART 1 - IRR when the initial investment changes
+Investment 10000: IRR = 11.5425% after 4 Newton steps
+Investment 11000: IRR = 7.1352% after 5 Newton steps
+Investment 9000: IRR = 16.7302% after 5 Newton steps
+Start 0.10: IRR = 11.5425% after 4 steps
+Start 0.50: IRR = 11.5425% after 8 steps
+Start 1.00: IRR = -154.4110% after 7 steps
+
+PART 2 - loan of 100,000 repaid 12 x 9,000
+Total repaid: 108,000 (extra 8,000 = 8% of the loan)
+Monthly rate  Newton: 1.204346% (4 steps) | Secant: 1.204346% (6 steps)
+Effective annual rate: 15.45%
+Simple annual rate (monthly x 12): 14.45%
+NPV at the solution: 0.000000

@@ -1,0 +1,18 @@
+PART 1 - different query times
+t=9.5: linear=21.250 C, cubic=21.316 C
+t=10.5: linear=23.250 C, cubic=23.363 C
+t=13.75: linear=25.125 C, cubic=25.250 C
+Linear at 14.5 h (outside data) -> ValueError: A value (14.5) in x_new is above the interpolation range's m
+Cubic spline at 14.5 h (extrapolation, unreliable): 24.199 C
+
+PART 2 - leave-one-out test on river level (m)
+ time  actual  linear   cubic  lin err  cub err
+    3    1.18   1.225   1.121    0.045    0.059
+    6    1.25   1.390   1.285    0.140    0.035
+    9    1.60   1.675   1.621    0.075    0.021
+   12    2.10   1.975   2.102    0.125    0.002
+   15    2.35   2.075   2.278    0.275    0.072
+   18    2.05   1.950   2.059    0.100    0.009
+   21    1.55   1.675   1.535    0.125    0.015
+Mean absolute error: linear=0.126 m, cubic=0.030 m
+If the 15:00 reading is lost, cubic spline estimates 2.28 m (true 2.35 m): peaks are the hardest points to recover.

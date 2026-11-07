@@ -1,0 +1,13 @@
+PART 1 - original vs +3 C offset
+Mean: 23.12 C -> 26.12 C
+Min : 17.50 C -> 20.50 C
+Max : 29.40 C -> 32.40 C
+Std dev (spread) unchanged: 4.174 vs 4.174
+
+PART 2 - soil moisture
+Mean moisture: 32.46 %
+Min / Max: 25 % / 45 %
+Hours below 30 %: 8
+Stressed hours: [16, 17, 18, 19, 20, 21, 22, 23]
+Fraction of day stressed: 33.3%
+First six normalised values: [0.45 0.4  0.4  0.35 0.3  0.25]

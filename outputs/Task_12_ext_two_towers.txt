@@ -1,0 +1,11 @@
+PART 1 - circle x^2+y^2=r^2 and parabola y=x^2-1
+r=2.0: x=1.5175, y=1.3028, residual norm=3.46e-13, converged=True
+r=3.0: x=1.8364, y=2.3723, residual norm=2.02e-12, converged=True
+r=0.5: x=0.5005, y=-0.4997, residual norm=3.54e-01, converged=False
+(For r < sqrt(3)/2 = 0.866 the curves never meet, so the solver cannot reach zero residuals.)
+
+PART 2 - two-tower position fix
+Guess [3.0, 3.0]: position=(3.7500, 3.3072) km, residuals=[0. 0.], converged=True
+Guess [3.0, -3.0]: position=(3.7500, -3.3072) km, residuals=[0. 0.], converged=True
+Algebra check: x=3.7500, y=+-3.3072
+Two towers give two possible positions; a third tower or a compass heading picks the right one.

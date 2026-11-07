@@ -1,0 +1,2036 @@
+<title>BIT 2118 Workbook</title>
+<meta name="claude:viewport-fit-sides" content="cover" />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&display=swap" />
+<style>
+  /* Layout: a task index on the left, one big graph-paper plot with live sliders in the middle of the page,
+   explanations underneath. The plot is the memorable thing; everything else stays quiet. */
+  :root {
+    --paper: #edf2ee;
+    --panel: #f8faf7;
+    --ink: #13222c;
+    --muted: #4c6370;
+    --grid: #d3dfd8;
+    --rule: #b9cbc2;
+    --blue: #1a4fd0;
+    --magenta: #b8135f;
+    --amber: #a85f00;
+    --font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+    --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0e181d;
+      --panel: #142229;
+      --ink: #e4eee9;
+      --muted: #9db3bd;
+      --grid: #223941;
+      --rule: #2f4852;
+      --blue: #8dabff;
+      --magenta: #ff86b8;
+      --amber: #f0b24a;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0e181d;
+    --panel: #142229;
+    --ink: #e4eee9;
+    --muted: #9db3bd;
+    --grid: #223941;
+    --rule: #2f4852;
+    --blue: #8dabff;
+    --magenta: #ff86b8;
+    --amber: #f0b24a;
+    color-scheme: dark;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  .wrap {
+    max-width: 1260px;
+    margin: 0 auto;
+    padding-block: 28px 64px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  header.top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 24px;
+    margin-bottom: 28px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--rule);
+  }
+  header.top h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.9rem;
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1.1;
+  }
+  header.top p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.98rem;
+    max-width: 62ch;
+  }
+  .shell {
+    display: grid;
+    grid-template-columns: 236px minmax(0, 1fr);
+    gap: 44px;
+    align-items: start;
+  }
+  .rail {
+    position: sticky;
+    top: 16px;
+    font-family: var(--font-display);
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    padding-right: 6px;
+  }
+  .rail h2 {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin: 18px 0 4px;
+    letter-spacing: 0.01em;
+  }
+  .rail h2:first-child {
+    margin-top: 0;
+  }
+  .rail a {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    padding: 5px 8px;
+    border-radius: 4px;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .rail a .n {
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    min-width: 1.6em;
+  }
+  .rail a:hover {
+    background: var(--grid);
+  }
+  .rail a[aria-current="page"] {
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 600;
+  }
+  .rail a[aria-current="page"] .n {
+    color: inherit;
+    opacity: 0.75;
+  }
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 2px;
+  }
+  .jump {
+    display: none;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    padding: 10px 12px;
+    width: 100%;
+    background: var(--panel);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+  }
+  main {
+    min-width: 0;
+  }
+  .head h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2rem, 4.4vw, 3.3rem);
+    letter-spacing: -0.03em;
+    line-height: 1.04;
+    margin: 0 0 10px;
+    text-wrap: balance;
+  }
+  .head h2 .tn {
+    color: var(--muted);
+    font-weight: 500;
+    margin-right: 0.35em;
+    font-variant-numeric: tabular-nums;
+  }
+  .head p {
+    margin: 0 0 22px;
+    max-width: 64ch;
+    color: var(--muted);
+  }
+  .plotbox {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 10px 10px 4px;
+  }
+  svg.plot {
+    display: block;
+    width: 100%;
+    height: auto;
+    font-family: var(--font-display);
+  }
+  svg.plot text {
+    fill: var(--muted);
+    font-size: 12.5px;
+  }
+  svg.plot .grid {
+    stroke: var(--grid);
+    stroke-width: 1;
+  }
+  svg.plot .axis {
+    stroke: var(--ink);
+    stroke-width: 1.2;
+  }
+  svg.plot .zero {
+    stroke: var(--muted);
+    stroke-width: 1;
+    stroke-dasharray: 5 4;
+  }
+  svg.plot .ref {
+    stroke: var(--amber);
+    stroke-width: 1.6;
+    stroke-dasharray: 6 4;
+  }
+  svg.plot .lbl {
+    fill: var(--ink);
+    font-size: 13px;
+  }
+  svg.plot .legend text {
+    fill: var(--ink);
+    font-size: 12.5px;
+  }
+  .s-blue {
+    stroke: var(--blue);
+  }
+  .s-magenta {
+    stroke: var(--magenta);
+  }
+  .s-ink {
+    stroke: var(--muted);
+  }
+  .s-amber {
+    stroke: var(--amber);
+  }
+  .f-blue {
+    fill: var(--blue);
+  }
+  .f-magenta {
+    fill: var(--magenta);
+  }
+  .f-ink {
+    fill: var(--muted);
+  }
+  .f-amber {
+    fill: var(--amber);
+  }
+  .panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 28px 40px;
+    margin: 22px 0 6px;
+  }
+  .controls {
+    display: grid;
+    gap: 16px;
+    align-content: start;
+  }
+  .ctl {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4px 12px;
+    font-family: var(--font-display);
+  }
+  .ctl label {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .ctl output {
+    font-variant-numeric: tabular-nums;
+    color: var(--blue);
+    font-weight: 700;
+    font-size: 0.98rem;
+  }
+  .ctl input[type="range"] {
+    grid-column: 1 / -1;
+    width: 100%;
+    accent-color: var(--blue);
+    height: 28px;
+    margin: 0;
+  }
+  .nocontrols {
+    margin: 0;
+    color: var(--muted);
+    font-style: italic;
+  }
+  dl.read {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0;
+    font-family: var(--font-display);
+  }
+  dl.read dt,
+  dl.read dd {
+    margin: 0;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.96rem;
+  }
+  dl.read dd {
+    font-weight: 700;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    padding-left: 16px;
+  }
+  dl.read dt {
+    color: var(--muted);
+  }
+  .note {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin: 10px 0 0;
+    max-width: 60ch;
+  }
+  .text {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 34px 48px;
+    margin-top: 40px;
+    padding-top: 26px;
+    border-top: 1px solid var(--rule);
+  }
+  .text h3 {
+    font-family: var(--font-display);
+    font-size: 1.18rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .text p {
+    margin: 0 0 10px;
+    max-width: 62ch;
+  }
+  pre {
+    margin: 0;
+    padding: 14px 16px;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    overflow-x: auto;
+    color: var(--ink);
+  }
+  .files {
+    margin-top: 26px;
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 22px;
+  }
+  .files code {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 0.85rem;
+    color: var(--ink);
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+  @media (max-width: 960px) {
+    .shell {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 20px;
+    }
+    .rail {
+      display: none;
+    }
+    .jump {
+      display: block;
+    }
+    .panel,
+    .text {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      scroll-behavior: auto !important;
+    }
+  }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>BIT 2118 Workbook</h1>
+    <p>
+      Nineteen scientific computing tasks. Move the sliders to change an input
+      and watch the result respond. Each task also has runnable Python, a
+      write-up, and a new real-world case.
+    </p>
+  </header>
+  <div class="shell">
+    <nav class="rail" id="rail" aria-label="Tasks"></nav>
+    <main>
+      <select class="jump" id="jump" aria-label="Choose a task"></select>
+      <article id="task"></article>
+    </main>
+  </div>
+</div>
+
+<script id="logic">
+  /* ---------- numerical helpers (pure) ---------- */
+  function solveLinear(A, b) {
+    const n = b.length;
+    A = A.map((r) => r.slice());
+    b = b.slice();
+    for (let i = 0; i < n; i++) {
+      let p = i;
+      for (let r = i + 1; r < n; r++)
+        if (Math.abs(A[r][i]) > Math.abs(A[p][i])) p = r;
+      [A[i], A[p]] = [A[p], A[i]];
+      [b[i], b[p]] = [b[p], b[i]];
+      for (let r = i + 1; r < n; r++) {
+        const f = A[r][i] / A[i][i];
+        for (let c = i; c < n; c++) A[r][c] -= f * A[i][c];
+        b[r] -= f * b[i];
+      }
+    }
+    const x = new Array(n);
+    for (let i = n - 1; i >= 0; i--) {
+      let s = b[i];
+      for (let c = i + 1; c < n; c++) s -= A[i][c] * x[c];
+      x[i] = s / A[i][i];
+    }
+    return x;
+  }
+  function makeSpline(x, y) {
+    // not-a-knot cubic spline, the same default as SciPy's CubicSpline
+    const n = x.length,
+      h = [];
+    for (let i = 0; i < n - 1; i++) h.push(x[i + 1] - x[i]);
+    const A = Array.from({ length: n }, () => new Array(n).fill(0)),
+      r = new Array(n).fill(0);
+    A[0][0] = h[1];
+    A[0][1] = -(h[0] + h[1]);
+    A[0][2] = h[0];
+    for (let i = 1; i < n - 1; i++) {
+      A[i][i - 1] = h[i - 1];
+      A[i][i] = 2 * (h[i - 1] + h[i]);
+      A[i][i + 1] = h[i];
+      r[i] = 6 * ((y[i + 1] - y[i]) / h[i] - (y[i] - y[i - 1]) / h[i - 1]);
+    }
+    A[n - 1][n - 3] = h[n - 2];
+    A[n - 1][n - 2] = -(h[n - 3] + h[n - 2]);
+    A[n - 1][n - 1] = h[n - 3];
+    const M = solveLinear(A, r);
+    return (t) => {
+      let i = 0;
+      while (i < n - 2 && t > x[i + 1]) i++;
+      const hi = h[i],
+        a = x[i + 1] - t,
+        b = t - x[i];
+      return (
+        (M[i] * a ** 3) / (6 * hi) +
+        (M[i + 1] * b ** 3) / (6 * hi) +
+        (y[i] / hi - (M[i] * hi) / 6) * a +
+        (y[i + 1] / hi - (M[i + 1] * hi) / 6) * b
+      );
+    };
+  }
+  function makeLinear(x, y) {
+    return (t) => {
+      let i = 0;
+      while (i < x.length - 2 && t > x[i + 1]) i++;
+      return y[i] + ((y[i + 1] - y[i]) * (t - x[i])) / (x[i + 1] - x[i]);
+    };
+  }
+  const range = (a, b, s) => {
+    const o = [];
+    for (let v = a; v <= b + s * 1e-9; v += s) o.push(+v.toFixed(10));
+    return o;
+  };
+  const mean = (a) => a.reduce((s, v) => s + v, 0) / a.length;
+  const erf = (x) => {
+    const s = Math.sign(x);
+    x = Math.abs(x);
+    const t = 1 / (1 + 0.3275911 * x);
+    return (
+      s *
+      (1 -
+        ((((1.061405429 * t - 1.453152027) * t + 1.421413741) * t -
+          0.284496736) *
+          t +
+          0.254829592) *
+          t *
+          Math.exp(-x * x))
+    );
+  };
+  const normSf = (c, m, s) => 0.5 * (1 - erf((c - m) / (s * Math.SQRT2)));
+  function mulberry32(a) {
+    return function () {
+      a |= 0;
+      a = (a + 0x6d2b79f5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  const fx = (v, d = 2) => v.toFixed(d);
+
+  /* ---------- task definitions ---------- */
+  const temps = [
+    18.5, 18.0, 17.8, 17.5, 17.9, 19.0, 21.5, 23.8, 25.6, 27.1, 28.3, 29.0,
+    29.4, 29.1, 28.5, 27.6, 26.2, 24.8, 23.4, 22.1, 21.0, 20.2, 19.6, 19.0,
+  ];
+  const riverT = [0, 3, 6, 9, 12, 15, 18, 21, 24],
+    riverL = [1.2, 1.18, 1.25, 1.6, 2.1, 2.35, 2.05, 1.55, 1.3];
+  const usersX = [50, 100, 150, 200, 250, 300, 350],
+    respY = [82, 95, 115, 145, 185, 238, 305];
+  const pageNames = ["Home", "News", "Blog", "Shop", "Contact"],
+    pageLinks = { 0: [1, 2], 1: [2], 2: [0], 3: [2, 4], 4: [3] };
+  const hOptions = [0.1, 0.25, 0.5, 1, 2, 3, 5, 6];
+  const rainF = (t) => 12 * t * Math.exp(-t / 1.5);
+  const rainExact = 12 * 1.5 ** 2 * (1 - Math.exp(-6 / 1.5) * (1 + 6 / 1.5));
+
+  function heatRod(steps, r) {
+    const n = 300,
+      a = -r,
+      b = 1 + 2 * r;
+    let u = new Array(n).fill(0);
+    for (let i = 140; i < 160; i++) u[i] = 100;
+    const u0 = u.slice();
+    for (let s = 0; s < steps; s++) {
+      const cp = new Array(n),
+        dp = new Array(n);
+      cp[0] = a / b;
+      dp[0] = u[0] / b;
+      for (let i = 1; i < n; i++) {
+        const m = b - a * cp[i - 1];
+        cp[i] = a / m;
+        dp[i] = (u[i] - a * dp[i - 1]) / m;
+      }
+      const x = new Array(n);
+      x[n - 1] = dp[n - 1];
+      for (let i = n - 2; i >= 0; i--) x[i] = dp[i] - cp[i] * x[i + 1];
+      u = x;
+    }
+    return { u0, u };
+  }
+  function jacobiGS(k) {
+    const b = [100, 0, 0, 0, 20],
+      n = 5;
+    const nb = (x, i) => (i > 0 ? x[i - 1] : 0) + (i < n - 1 ? x[i + 1] : 0);
+    let xj = new Array(n).fill(0),
+      xg = new Array(n).fill(0);
+    for (let s = 0; s < k; s++) {
+      xj = xj.map((_, i) => (b[i] + nb(xj, i)) / 2);
+      for (let i = 0; i < n; i++) xg[i] = (b[i] + nb(xg, i)) / 2;
+    }
+    return { xj, xg };
+  }
+  function pagerank(d) {
+    const n = 5,
+      M = Array.from({ length: n }, () => new Array(n).fill(0));
+    for (const j in pageLinks)
+      for (const i of pageLinks[j]) M[i][j] = 1 / pageLinks[j].length;
+    let v = new Array(n).fill(1 / n);
+    for (let s = 0; s < 500; s++)
+      v = v.map(
+        (_, i) => d * M[i].reduce((a, m, j) => a + m * v[j], 0) + (1 - d) / n,
+      );
+    const t = v.reduce((a, b) => a + b, 0);
+    return v.map((x) => x / t);
+  }
+  function springRun(c) {
+    const dt = 0.0025,
+      f = (x, v) => [v, -(c * v + 25 * x)];
+    let x = 0.1,
+      v = 0;
+    const xs = [x];
+    for (let i = 1; i <= 2400; i++) {
+      const k1 = f(x, v),
+        k2 = f(x + (dt / 2) * k1[0], v + (dt / 2) * k1[1]),
+        k3 = f(x + (dt / 2) * k2[0], v + (dt / 2) * k2[1]),
+        k4 = f(x + dt * k3[0], v + dt * k3[1]);
+      x += (dt / 6) * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]);
+      v += (dt / 6) * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1]);
+      if (i % 2 === 0) xs.push(x);
+    }
+    return xs; // samples every 0.005 s
+  }
+  function polyFit(deg) {
+    const u = usersX.map((v) => v / 100),
+      V = u.map((x) => Array.from({ length: deg + 1 }, (_, j) => x ** j));
+    const AtA = Array.from({ length: deg + 1 }, (_, i) =>
+      Array.from({ length: deg + 1 }, (_, j) =>
+        V.reduce((s, r) => s + r[i] * r[j], 0),
+      ),
+    );
+    const Atb = Array.from({ length: deg + 1 }, (_, i) =>
+      V.reduce((s, r, k) => s + r[i] * respY[k], 0),
+    );
+    const c = solveLinear(AtA, Atb);
+    return (x) => c.reduce((s, cj, j) => s + cj * (x / 100) ** j, 0);
+  }
+
+  const TASKS = [
+    {
+      n: 2,
+      group: "Arrays and errors",
+      name: "NumPy arrays",
+      concept:
+        "An array holds many numbers so one operation can act on all of them at once.",
+      params: [
+        {
+          id: "off",
+          label: "Sensor offset (°C)",
+          min: -5,
+          max: 10,
+          step: 0.5,
+          value: 0,
+          fmt: (v) => (v > 0 ? "+" : "") + v.toFixed(1),
+        },
+      ],
+      compute(p) {
+        const s = temps.map((v) => v + p.off),
+          m = mean(s),
+          sd = Math.sqrt(mean(s.map((v) => (v - m) ** 2)));
+        return {
+          xlabel: "Hour of day",
+          ylabel: "Temperature (°C)",
+          xlim: [0, 23],
+          series: [
+            {
+              name: "Original readings",
+              type: "line",
+              color: "ink",
+              pts: temps.map((v, i) => [i, v]),
+            },
+            {
+              name: "Shifted readings",
+              type: "line",
+              color: "blue",
+              pts: s.map((v, i) => [i, v]),
+            },
+          ],
+          readouts: [
+            ["Daily mean", fx(m) + " °C"],
+            ["Minimum", fx(Math.min(...s)) + " °C"],
+            ["Maximum", fx(Math.max(...s)) + " °C"],
+            ["Spread (standard deviation)", fx(sd, 3) + " °C"],
+            ["Mean in Fahrenheit", fx(1.8 * m + 32) + " °F"],
+          ],
+        };
+      },
+      meaning:
+        "The average, minimum and maximum come from one call each, and the Fahrenheit conversion runs on the whole array at once. Raising every reading by a constant moves the mean, minimum and maximum by exactly that amount and leaves the spread unchanged.",
+      out: "Daily mean temperature: 23.12 C\nMinimum temperature: 17.50 C\nMaximum temperature: 29.40 C",
+      ext: [
+        "Greenhouse soil moisture",
+        "Twenty-four hourly moisture readings with irrigation at hour 6. A boolean mask finds the 8 hours below the 30 % stress threshold (a third of the day), all in one array test.",
+      ],
+    },
+    {
+      n: 3,
+      group: "Arrays and errors",
+      name: "Vectorization",
+      concept:
+        "Applying one expression to a whole array runs in compiled code and avoids a slow Python loop.",
+      params: [],
+      compute() {
+        return {
+          bars: {
+            cats: ["1,000 values", "100,000 values", "1,000,000 values"],
+            values: [18, 15, 70],
+            fmt: (v) => v + "×",
+          },
+          ylabel: "Speed-up over a Python loop (times faster)",
+          readouts: [
+            ["Original program: loop", "0.1932 s"],
+            ["Original program: vectorized", "0.0034 s"],
+            ["Original program: speed-up", "56.8×"],
+            ["Fee rule on 1,000,000 transactions", "61× faster"],
+          ],
+          note: "These timings were measured in Python on the build machine. Your computer will give different numbers, but the size of the gap is similar.",
+        };
+      },
+      meaning:
+        "Both versions produce the same numbers; only the cost differs. At a million values the vectorized code is roughly 50 to 70 times faster, which matters when a calculation repeats millions of times in simulations or signal processing.",
+      out: "Loop time: 0.1932 s\nVectorized time: 0.0034 s\nApproximate speed-up: 56.8x",
+      ext: [
+        "Transaction fees",
+        "A fee of 1 % with a 5 KES minimum and 100 KES cap, applied to a million simulated payments with np.clip. Identical results to the loop, about 61 times faster.",
+      ],
+    },
+    {
+      n: 4,
+      group: "Arrays and errors",
+      name: "Floating-point errors",
+      concept:
+        "Computers store most decimals approximately, and subtracting nearly equal numbers can wipe out the digits you wanted.",
+      params: [
+        {
+          id: "k",
+          label: "Size of x: 10 to the power",
+          min: -16,
+          max: -2,
+          step: 0.5,
+          value: -8,
+          fmt: (v) => v.toFixed(1),
+        },
+      ],
+      compute(p) {
+        const f = (x) => (Math.sqrt(1 + x) - 1) / x,
+          g = (x) => 1 / (Math.sqrt(1 + x) + 1),
+          ks = range(-16, -2, 0.25);
+        const x = 10 ** p.k,
+          d = f(x),
+          s = g(x);
+        return {
+          xlabel: "log10 of x",
+          ylabel: "Computed value (true value is close to 0.5)",
+          ylim: [-0.05, 0.6],
+          xlim: [-16, -2],
+          vlines: [p.k],
+          series: [
+            {
+              name: "Direct formula",
+              type: "line",
+              color: "magenta",
+              pts: ks.map((k) => [k, f(10 ** k)]),
+            },
+            {
+              name: "Rearranged formula",
+              type: "line",
+              color: "blue",
+              pts: ks.map((k) => [k, g(10 ** k)]),
+            },
+          ],
+          readouts: [
+            ["x", x.toExponential(1)],
+            ["Direct formula", d.toFixed(12)],
+            ["Rearranged formula", s.toFixed(12)],
+            [
+              "Relative error of direct",
+              ((Math.abs(d - s) / s) * 100).toExponential(2) + " %",
+            ],
+          ],
+        };
+      },
+      meaning:
+        "The direct formula subtracts two almost equal numbers, so as x shrinks the answer loses digits and finally collapses to 0. The rearranged formula is algebraically identical but stays at 0.5. Where the number of digits matters, the choice of formula matters more than the step size.",
+      out: "0.1 + 0.2 = 0.30000000000000004\nExact comparison: False\nTolerance-based comparison: True\nAbsolute error: 0.00021356",
+      ext: [
+        "Adding 0.1 a million times",
+        "Single precision ends 958 away from the true 100,000 total; double precision is off by about 1e-6; np.sum and math.fsum are essentially exact.",
+      ],
+    },
+    {
+      n: 5,
+      group: "Linear algebra",
+      name: "Matrix algebra",
+      concept:
+        "Matrices describe transformations. Multiplying them combines a rotation and a stretch into one step.",
+      params: [
+        {
+          id: "ang",
+          label: "Rotation angle",
+          min: 0,
+          max: 360,
+          step: 5,
+          value: 45,
+          fmt: (v) => v + "°",
+        },
+        {
+          id: "sx",
+          label: "Stretch in x",
+          min: 0.5,
+          max: 3,
+          step: 0.1,
+          value: 2,
+          fmt: (v) => v.toFixed(1),
+        },
+        {
+          id: "sy",
+          label: "Stretch in y",
+          min: 0.5,
+          max: 3,
+          step: 0.1,
+          value: 1.5,
+          fmt: (v) => v.toFixed(1),
+        },
+      ],
+      compute(p) {
+        const a = (p.ang * Math.PI) / 180,
+          c = Math.cos(a),
+          s = Math.sin(a),
+          sq = [
+            [0, 0],
+            [1, 0],
+            [1, 1],
+            [0, 1],
+            [0, 0],
+          ];
+        const tr = ([x, y]) => {
+            const X = x * p.sx,
+              Y = y * p.sy;
+            return [c * X - s * Y, s * X + c * Y];
+          },
+          t = sq.map(tr);
+        return {
+          xlabel: "x",
+          ylabel: "y",
+          xlim: [-4.5, 4.5],
+          ylim: [-4.5, 4.5],
+          equal: true,
+          series: [
+            { name: "Original square", type: "poly", color: "ink", pts: sq },
+            { name: "Transformed", type: "poly", color: "blue", pts: t },
+          ],
+          readouts: [
+            ["Determinant", fx(p.sx * p.sy, 2)],
+            ["Area of the shape", fx(p.sx * p.sy, 2) + " (was 1)"],
+            [
+              "Corner (1, 1) moves to",
+              "(" + fx(t[2][0]) + ", " + fx(t[2][1]) + ")",
+            ],
+          ],
+        };
+      },
+      meaning:
+        "The square is stretched and then turned. The determinant is the area scale factor, so it equals the product of the two stretches whatever the angle: a rotation never changes area. A determinant of zero would flatten the shape and make the transformation impossible to undo.",
+      out: "Transformed points:\n [[ 0.          0.        ]\n [ 1.41421356  1.41421356]\n [ 0.35355339  2.47487373]\n [-1.06066017  1.06066017]]\nDeterminant: 2.9999999999999996",
+      ext: [
+        "Two-link robot arm",
+        "Rotation matrices chain the two joint angles. With links of 0.5 m and 0.3 m the tip can be anywhere from 0.2 m to 0.8 m from the base.",
+      ],
+    },
+    {
+      n: 6,
+      group: "Linear algebra",
+      name: "Systems of linear equations",
+      concept:
+        "Several unknowns, several equations: find the values that satisfy all of them together.",
+      params: [
+        {
+          id: "b1",
+          label: "Total CPU units used",
+          min: 10,
+          max: 40,
+          step: 0.5,
+          value: 20,
+          fmt: (v) => v.toFixed(1),
+        },
+        {
+          id: "b2",
+          label: "Total memory used (GB)",
+          min: 40,
+          max: 120,
+          step: 1,
+          value: 72,
+          fmt: (v) => v + " GB",
+        },
+      ],
+      compute(p) {
+        const x = (12 * p.b1 - 2 * p.b2) / 32,
+          y = (4 * p.b2 - 8 * p.b1) / 32,
+          whole =
+            Math.abs(x - Math.round(x)) < 1e-9 &&
+            Math.abs(y - Math.round(y)) < 1e-9 &&
+            x >= 0 &&
+            y >= 0;
+        const xs = range(0, 12, 0.25);
+        return {
+          xlabel: "Type A servers",
+          ylabel: "Type B servers",
+          xlim: [0, 12],
+          ylim: [0, 16],
+          series: [
+            {
+              name: "CPU equation",
+              type: "line",
+              color: "blue",
+              pts: xs.map((v) => [v, (p.b1 - 4 * v) / 2]),
+            },
+            {
+              name: "Memory equation",
+              type: "line",
+              color: "magenta",
+              pts: xs.map((v) => [v, (p.b2 - 8 * v) / 12]),
+            },
+            { name: "Solution", type: "dots", color: "amber", pts: [[x, y]] },
+          ],
+          readouts: [
+            ["Type A servers", fx(x, 3)],
+            ["Type B servers", fx(y, 3)],
+            ["Possible with whole servers?", whole ? "Yes" : "No"],
+          ],
+        };
+      },
+      meaning:
+        "Each equation is a straight line and the solution is where the lines cross. With 20 CPU units and 72 GB the crossing is exactly 3 Type A and 4 Type B servers. Move the totals and the crossing usually stops landing on whole numbers, which tells you the data cannot come from whole servers.",
+      out: "Type A servers: 3\nType B servers: 4\nResidual norm: 0.0",
+      ext: [
+        "Three-loop circuit",
+        "Kirchhoff’s voltage law gives a 3×3 system for the loop currents: 547.7 mA, 112.8 mA and −57.8 mA. The negative sign means that loop flows the opposite way to the assumed direction.",
+      ],
+    },
+    {
+      n: 7,
+      group: "Linear algebra",
+      name: "LU decomposition",
+      concept:
+        "Factor the matrix once, then reuse the factors for every new right-hand side.",
+      params: [
+        {
+          id: "steps",
+          label: "Time steps taken",
+          min: 0,
+          max: 300,
+          step: 10,
+          value: 300,
+          fmt: (v) => v,
+        },
+        {
+          id: "r",
+          label: "Diffusion number",
+          min: 0.2,
+          max: 3,
+          step: 0.1,
+          value: 1,
+          fmt: (v) => v.toFixed(1),
+        },
+      ],
+      compute(p) {
+        const { u0, u } = heatRod(p.steps, p.r),
+          idx = u.map((_, i) => i + 1);
+        return {
+          xlabel: "Position along the rod (node)",
+          ylabel: "Temperature (°C)",
+          xlim: [1, 300],
+          ylim: [0, 105],
+          series: [
+            {
+              name: "Start",
+              type: "line",
+              color: "ink",
+              dash: true,
+              pts: u0.map((v, i) => [idx[i], v]),
+            },
+            {
+              name: "After the steps",
+              type: "line",
+              color: "blue",
+              pts: u.map((v, i) => [idx[i], v]),
+            },
+          ],
+          readouts: [
+            ["Peak temperature", fx(Math.max(...u)) + " °C"],
+            ["Nodes hotter than 1 °C", u.filter((v) => v > 1).length],
+            [
+              "Total heat",
+              fx(
+                u.reduce((a, b) => a + b, 0),
+                1,
+              ),
+            ],
+          ],
+          note: "The browser solves each step with a tridiagonal solver. The Python version factors the matrix once with lu_factor and was about 23 times faster than solving from scratch every step.",
+        };
+      },
+      meaning:
+        "Heat spreads out and the peak flattens. Every step solves a system with the same matrix and a new right-hand side, so factoring once saves nearly all the work. Total heat stays constant until the spreading reaches the cold ends of the rod.",
+      out: "Measurement set 1  Solution: [5. 5. 5.]\nMeasurement set 2  Solution: [5.317 5.268 4.756]\nMeasurement set 3  Solution: [4.902 5.610 5.537]",
+      ext: [
+        "Heat in a metal rod",
+        "300 nodes and 300 time steps with a reused factorization: the same answer as solving every step afresh, about 23 times faster.",
+      ],
+    },
+    {
+      n: 8,
+      group: "Linear algebra",
+      name: "Iterative methods",
+      concept:
+        "Start with a guess and keep improving it until the change falls below a tolerance.",
+      params: [
+        {
+          id: "k",
+          label: "Iterations done",
+          min: 0,
+          max: 150,
+          step: 1,
+          value: 10,
+          fmt: (v) => v,
+        },
+      ],
+      compute(p) {
+        const { xj, xg } = jacobiGS(p.k),
+          ex = [86.6667, 73.3333, 60, 46.6667, 33.3333],
+          idx = [1, 2, 3, 4, 5],
+          err = (x) => Math.max(...x.map((v, i) => Math.abs(v - ex[i])));
+        return {
+          xlabel: "Grid point",
+          ylabel: "Temperature (°C)",
+          xlim: [0.7, 5.3],
+          ylim: [0, 100],
+          series: [
+            {
+              name: "Exact answer",
+              type: "dots",
+              color: "amber",
+              pts: idx.map((v, i) => [v, ex[i]]),
+            },
+            {
+              name: "Jacobi",
+              type: "line",
+              color: "magenta",
+              pts: idx.map((v, i) => [v, xj[i]]),
+            },
+            {
+              name: "Gauss-Seidel",
+              type: "line",
+              color: "blue",
+              pts: idx.map((v, i) => [v, xg[i]]),
+            },
+          ],
+          readouts: [
+            ["Iterations", p.k],
+            ["Jacobi largest error", fx(err(xj), 4) + " °C"],
+            ["Gauss-Seidel largest error", fx(err(xg), 4) + " °C"],
+          ],
+        };
+      },
+      meaning:
+        "Both methods begin at zero and climb toward the straight-line temperature profile between the 100 °C and 20 °C boundaries. Gauss-Seidel uses new values immediately, so it needs about half as many iterations: 75 against 150 for a tolerance of 1e-8.",
+      out: "Jacobi temperatures: [86.667 73.333 60. 46.667 33.333]\nJacobi iterations: 150\nGauss-Seidel iterations: 75",
+      ext: [
+        "Longer rods",
+        "With 5, 10, 20 and 40 grid points Gauss-Seidel needs 75, 245, 842 and 2993 iterations. Finer grids make plain iteration slow.",
+      ],
+    },
+    {
+      n: 9,
+      group: "Linear algebra",
+      name: "Eigenvalues and eigenvectors",
+      concept:
+        "An eigenvector keeps its direction when a matrix acts on it; the eigenvalue says by how much it stretches.",
+      params: [
+        {
+          id: "d",
+          label: "Damping factor",
+          min: 0.1,
+          max: 0.95,
+          step: 0.05,
+          value: 0.85,
+          fmt: (v) => v.toFixed(2),
+        },
+      ],
+      compute(p) {
+        const s = pagerank(p.d),
+          top = s.indexOf(Math.max(...s));
+        return {
+          bars: { cats: pageNames, values: s, fmt: (v) => v.toFixed(3) },
+          ylabel: "PageRank score",
+          readouts: [
+            ["Highest ranked page", pageNames[top]],
+            ["Its score", fx(s[top], 4)],
+            ["Lowest score", fx(Math.min(...s), 4)],
+          ],
+        };
+      },
+      meaning:
+        "PageRank is the dominant eigenvector of the “Google matrix” built from the links and the damping factor. Blog collects the most links so it ranks first. A lower damping factor mixes in more random jumping, which flattens the ranking.",
+      out: "Dominant eigenvalue: 2.561552812808829\nA: 0.2192  B: 0.2808  C: 0.2808  D: 0.2192\nVerification error: 1.5e-15",
+      ext: [
+        "PageRank of five web pages",
+        "Directed links with a damping factor of 0.85 give Blog 0.350, Home 0.327, News 0.169, Shop 0.087 and Contact 0.067, confirmed by power iteration.",
+      ],
+    },
+    {
+      n: 10,
+      group: "Finding roots",
+      name: "Bisection and fixed point",
+      concept:
+        "Find where a function crosses zero by halving a bracket, or by repeating x = g(x).",
+      params: [
+        {
+          id: "A",
+          label: "Heat term A",
+          min: 5,
+          max: 40,
+          step: 1,
+          value: 10,
+          fmt: (v) => v,
+        },
+      ],
+      compute(p) {
+        const f = (T) => T - 25 - p.A * Math.exp(-T / 20),
+          g = (T) => 25 + p.A * Math.exp(-T / 20);
+        let a = 20,
+          b = 40,
+          h = 0;
+        while (b - a > 1e-10) {
+          const m = (a + b) / 2;
+          if (f(a) * f(m) <= 0) b = m;
+          else a = m;
+          h++;
+        }
+        const root = (a + b) / 2;
+        let T = 30,
+          it = 0;
+        for (;;) {
+          const Tn = g(T);
+          it++;
+          if (Math.abs(Tn - T) < 1e-10 || it >= 200) {
+            T = Tn;
+            break;
+          }
+          T = Tn;
+        }
+        return {
+          xlabel: "Temperature (°C)",
+          ylabel: "Heat-balance function f(T)",
+          xlim: [20, 40],
+          hlines: [0],
+          vlines: [root],
+          series: [
+            {
+              name: "f(T)",
+              type: "line",
+              color: "blue",
+              pts: range(20, 40, 0.2).map((t) => [t, f(t)]),
+            },
+          ],
+          readouts: [
+            ["Equilibrium (bisection)", fx(root, 6) + " °C"],
+            ["Equilibrium (fixed point)", fx(T, 6) + " °C"],
+            ["Bisection halvings", h],
+            ["Fixed-point iterations", it],
+          ],
+        };
+      },
+      meaning:
+        "The curve crosses zero once, and that crossing is the equilibrium temperature where heat gain equals heat loss. To its left the function is negative, to its right positive. Both methods find the same value; bisection always takes about 38 halvings, while fixed point slows down as A grows.",
+      out: "Bisection equilibrium temperature: 27.525211 C\nFixed-point equilibrium temperature: 27.525211 C\nFixed-point iterations: 13",
+      ext: [
+        "Business break-even points",
+        "Revenue falls as volume rises and costs climb, so profit crosses zero twice. Bisection in two brackets finds a profitable range from 28.9 to 2304.4 units.",
+      ],
+    },
+    {
+      n: 11,
+      group: "Finding roots",
+      name: "Newton and secant",
+      concept:
+        "Newton’s method follows the tangent line to the root; the secant method estimates the slope from two points.",
+      params: [
+        {
+          id: "inv",
+          label: "Initial investment",
+          min: 8000,
+          max: 12500,
+          step: 100,
+          value: 10000,
+          fmt: (v) => v.toLocaleString("en-US"),
+        },
+      ],
+      compute(p) {
+        const cf = [-p.inv, 3000, 3500, 4000, 2500],
+          npv = (r) => cf.reduce((s, c, t) => s + c / (1 + r) ** t, 0),
+          d = (r) =>
+            cf.reduce(
+              (s, c, t) => (t > 0 ? s - (t * c) / (1 + r) ** (t + 1) : s),
+              0,
+            );
+        let r = 0.1;
+        for (let i = 0; i < 60; i++) {
+          const st = npv(r) / d(r);
+          r -= st;
+          if (Math.abs(st) < 1e-13) break;
+        }
+        return {
+          xlabel: "Discount rate (%)",
+          ylabel: "Net present value",
+          hlines: [0],
+          vlines: [r * 100],
+          series: [
+            {
+              name: "NPV(rate)",
+              type: "line",
+              color: "blue",
+              pts: range(0, 0.4, 0.004).map((v) => [v * 100, npv(v)]),
+            },
+          ],
+          readouts: [
+            ["Internal rate of return", fx(r * 100, 4) + " %"],
+            ["NPV at that rate", fx(npv(r), 6)],
+          ],
+        };
+      },
+      meaning:
+        "The internal rate of return is the discount rate at which the project’s inflows exactly equal its cost. Paying more for the same returns lowers it. Newton needs a sensible starting guess: from a rate of 100 % the Python run landed on a meaningless root of −154 %.",
+      out: "IRR using Newton-Raphson: 11.542461%\nIRR using Secant method: 11.542461%\nNewton iterations: 4, Secant iterations: 7",
+      ext: [
+        "True cost of a loan",
+        "Borrowing 100,000 and repaying 12 × 9,000 sounds like 8 % extra, but the monthly rate is 1.204 %, an effective annual rate of 15.45 %.",
+      ],
+    },
+    {
+      n: 12,
+      group: "Finding roots",
+      name: "Nonlinear equations",
+      concept:
+        "Find values that make every equation true at once, here where a circle meets a parabola.",
+      params: [
+        {
+          id: "r",
+          label: "Circle radius",
+          min: 0.3,
+          max: 3,
+          step: 0.05,
+          value: 2,
+          fmt: (v) => v.toFixed(2),
+        },
+      ],
+      compute(p) {
+        const disc = 4 * p.r * p.r - 3,
+          pts = [];
+        if (disc >= 0)
+          for (const y of [
+            (-1 + Math.sqrt(disc)) / 2,
+            (-1 - Math.sqrt(disc)) / 2,
+          ])
+            if (y + 1 >= 0) {
+              const x = Math.sqrt(y + 1);
+              pts.push([x, y]);
+              if (x > 1e-9) pts.push([-x, y]);
+            }
+        const circle = range(0, 360, 2).map((a) => [
+          p.r * Math.cos((a * Math.PI) / 180),
+          p.r * Math.sin((a * Math.PI) / 180),
+        ]);
+        return {
+          xlabel: "x",
+          ylabel: "y",
+          xlim: [-3.5, 3.5],
+          ylim: [-3.5, 3.5],
+          equal: true,
+          series: [
+            { name: "Circle", type: "line", color: "blue", pts: circle },
+            {
+              name: "Parabola",
+              type: "line",
+              color: "magenta",
+              pts: range(-2.4, 2.4, 0.05).map((x) => [x, x * x - 1]),
+            },
+            { name: "Intersections", type: "dots", color: "amber", pts },
+          ],
+          readouts: pts.length
+            ? pts.map((q, i) => [
+                "Intersection " + (i + 1),
+                "(" + fx(q[0], 4) + ", " + fx(q[1], 4) + ")",
+              ])
+            : [["Intersections", "None: the curves never meet"]],
+        };
+      },
+      meaning:
+        "The two curves meet at mirror-image points, so which one the solver finds depends on the starting guess. Below a radius of about 0.87 the circle never touches the parabola, and the Python solver reports that it did not converge. Always check the convergence flag and the residuals.",
+      out: "Initial guess: [1.0, 1.0]\nIntersection: [1.51748991 1.30277564]\nConverged: True",
+      ext: [
+        "Phone position from two towers",
+        "A phone 5 km from one tower and 4 km from another sits at (3.75, ±3.31) km. Two circles meet at two points, so a third tower is needed to choose.",
+      ],
+    },
+    {
+      n: 13,
+      group: "Data from measurements",
+      name: "Interpolation",
+      concept:
+        "Estimate values between known measurements with straight lines or a smooth cubic spline.",
+      params: [
+        {
+          id: "hide",
+          label: "Pretend this reading is missing",
+          min: 0,
+          max: 7,
+          step: 1,
+          value: 5,
+          fmt: (v) => (v === 0 ? "None" : riverT[v] + ":00"),
+        },
+      ],
+      compute(p) {
+        const keep = riverT.map((_, i) => i !== p.hide || p.hide === 0),
+          xs = riverT.filter((_, i) => keep[i]),
+          ys = riverL.filter((_, i) => keep[i]);
+        const lin = makeLinear(xs, ys),
+          cub = makeSpline(xs, ys),
+          grid = range(0, 24, 0.25),
+          series = [
+            {
+              name: "Linear",
+              type: "line",
+              color: "ink",
+              pts: grid.map((t) => [t, lin(t)]),
+            },
+            {
+              name: "Cubic spline",
+              type: "line",
+              color: "blue",
+              pts: grid.map((t) => [t, cub(t)]),
+            },
+            {
+              name: "Readings kept",
+              type: "dots",
+              color: "blue",
+              pts: xs.map((t, i) => [t, ys[i]]),
+            },
+          ];
+        let readouts = [["Readings used", xs.length + " of 9"]];
+        if (p.hide > 0) {
+          const t = riverT[p.hide],
+            a = riverL[p.hide];
+          series.push({
+            name: "Missing reading",
+            type: "ring",
+            color: "magenta",
+            pts: [[t, a]],
+          });
+          readouts = [
+            ["Actual level", fx(a) + " m"],
+            ["Linear estimate", fx(lin(t), 3) + " m"],
+            ["Cubic estimate", fx(cub(t), 3) + " m"],
+            ["Linear error", fx(Math.abs(lin(t) - a), 3) + " m"],
+            ["Cubic error", fx(Math.abs(cub(t) - a), 3) + " m"],
+          ];
+        }
+        return {
+          xlabel: "Hour of day",
+          ylabel: "River level (m)",
+          xlim: [0, 24],
+          series,
+          readouts,
+        };
+      },
+      meaning:
+        "The spline follows the curve smoothly and recovers hidden readings better than straight lines, with an average error of 0.03 m against 0.13 m. Even so, the flood peak at 15:00 is the hardest value to recover. Interpolation is safe between measurements and risky outside them.",
+      out: "Linear estimate at 10:30: 23.25 C\nCubic estimate at 10:30: 23.36 C",
+      ext: [
+        "River gauge with a lost reading",
+        "Hiding each reading in turn and predicting it from the rest. The spline averages 0.030 m error, linear 0.126 m. This page runs that test with the slider.",
+      ],
+    },
+    {
+      n: 14,
+      group: "Data from measurements",
+      name: "Curve fitting",
+      concept:
+        "Choose model parameters so the curve passes as close as possible to the measurements.",
+      params: [
+        {
+          id: "deg",
+          label: "Polynomial degree",
+          min: 1,
+          max: 3,
+          step: 1,
+          value: 2,
+          fmt: (v) =>
+            v === 1 ? "1 (a line)" : v === 2 ? "2 (quadratic)" : "3 (cubic)",
+        },
+      ],
+      compute(p) {
+        const f = polyFit(p.deg),
+          rmse = Math.sqrt(mean(usersX.map((x, i) => (respY[i] - f(x)) ** 2)));
+        return {
+          xlabel: "Concurrent users",
+          ylabel: "Response time (ms)",
+          xlim: [40, 410],
+          series: [
+            {
+              name: "Fitted curve",
+              type: "line",
+              color: "blue",
+              pts: range(50, 400, 5).map((x) => [x, f(x)]),
+            },
+            {
+              name: "Measurements",
+              type: "dots",
+              color: "magenta",
+              pts: usersX.map((x, i) => [x, respY[i]]),
+            },
+            {
+              name: "Prediction at 400",
+              type: "ring",
+              color: "amber",
+              pts: [[400, f(400)]],
+            },
+          ],
+          readouts: [
+            ["Root-mean-square error", fx(rmse) + " ms"],
+            ["Predicted at 400 users", fx(f(400), 1) + " ms"],
+          ],
+        };
+      },
+      meaning:
+        "A straight line cannot follow response times that speed up under load, so its error is large. The quadratic fits to within about 1.5 ms. The cubic fits almost perfectly but may be chasing noise, and its prediction beyond the data differs by 10 ms from the quadratic’s.",
+      out: "Fitted model: y = 0.002167x^2 + -0.1345x + 85.00\nRMSE: 1.55 ms\nPredicted response at 400 users: 377.86 ms",
+      ext: [
+        "Plant growth",
+        "Synthetic height data fitted with a logistic curve (maximum 121 cm, error 1.1 cm). An exponential model keeps climbing and predicts 362 cm at day 60.",
+      ],
+    },
+    {
+      n: 15,
+      group: "Calculus and ODEs",
+      name: "Numerical differentiation",
+      concept:
+        "Estimate a rate of change from nearby values. Smaller steps help until rounding errors take over.",
+      params: [
+        {
+          id: "k",
+          label: "Step size h: 10 to the power",
+          min: -12,
+          max: -1,
+          step: 1,
+          value: -3,
+          fmt: (v) => v,
+        },
+      ],
+      compute(p) {
+        const ex = Math.cos(1),
+          F = (h) => Math.abs((Math.sin(1 + h) - Math.sin(1)) / h - ex),
+          C = (h) =>
+            Math.abs((Math.sin(1 + h) - Math.sin(1 - h)) / (2 * h) - ex),
+          ks = range(-12, -1, 0.25),
+          lg = (v) => Math.log10(Math.max(v, 1e-17)),
+          h = 10 ** p.k;
+        return {
+          xlabel: "log10 of the step size h",
+          ylabel: "log10 of the error",
+          xlim: [-12, -1],
+          vlines: [p.k],
+          series: [
+            {
+              name: "Forward difference",
+              type: "line",
+              color: "magenta",
+              pts: ks.map((k) => [k, lg(F(10 ** k))]),
+            },
+            {
+              name: "Central difference",
+              type: "line",
+              color: "blue",
+              pts: ks.map((k) => [k, lg(C(10 ** k))]),
+            },
+          ],
+          readouts: [
+            ["Step size h", h.toExponential(0)],
+            ["Forward error", F(h).toExponential(2)],
+            ["Central error", C(h).toExponential(2)],
+          ],
+        };
+      },
+      meaning:
+        "The errors fall as h shrinks, the central difference much faster because it is accurate to second order. Past about 1e-8 round-off takes over and the errors rise again. For the GPS example the speed estimate climbs from 4.8 to 8.0 m/s, so the vehicle is accelerating.",
+      out: "t=0s, position=0.0m, estimated speed=4.80m/s\nt=3s, position=16.1m, estimated speed=6.25m/s\nt=6s, position=38.0m, estimated speed=8.00m/s",
+      ext: [
+        "Car acceleration from speed readings",
+        "Speeds every 2 seconds give an acceleration that starts at 2.57 m/s² and falls toward zero as the car levels off, covering about 108.6 m in 10 s.",
+      ],
+    },
+    {
+      n: 16,
+      group: "Calculus and ODEs",
+      name: "Numerical integration",
+      concept:
+        "Add up many small contributions to find the area under a curve or an accumulated total.",
+      params: [
+        {
+          id: "m",
+          label: "Intervals between readings",
+          min: 2,
+          max: 24,
+          step: 2,
+          value: 6,
+          fmt: (v) => v,
+        },
+      ],
+      compute(p) {
+        const m = p.m,
+          h = 6 / m,
+          t = range(0, 6, h).slice(0, m + 1),
+          y = t.map(rainF);
+        let trap = 0;
+        for (let i = 0; i < m; i++) trap += (h * (y[i] + y[i + 1])) / 2;
+        let simp = y[0] + y[m];
+        for (let i = 1; i < m; i++) simp += (i % 2 ? 4 : 2) * y[i];
+        simp *= h / 3;
+        return {
+          xlabel: "Hours since the storm began",
+          ylabel: "Rain intensity (mm/h)",
+          xlim: [0, 6],
+          series: [
+            {
+              name: "Storm curve",
+              type: "line",
+              color: "blue",
+              pts: range(0, 6, 0.05).map((x) => [x, rainF(x)]),
+            },
+            {
+              name: "Straight-line segments",
+              type: "line",
+              color: "magenta",
+              pts: t.map((x, i) => [x, y[i]]),
+            },
+            {
+              name: "Readings",
+              type: "dots",
+              color: "magenta",
+              pts: t.map((x, i) => [x, y[i]]),
+            },
+          ],
+          readouts: [
+            ["Exact total", fx(rainExact, 4) + " mm"],
+            ["Trapezoid rule", fx(trap, 4) + " mm"],
+            ["Simpson’s rule", fx(simp, 4) + " mm"],
+            ["Trapezoid error", fx(Math.abs(trap - rainExact), 4) + " mm"],
+            ["Simpson error", fx(Math.abs(simp - rainExact), 4) + " mm"],
+          ],
+        };
+      },
+      meaning:
+        "The trapezoid rule replaces the curve with straight segments and underestimates where it bends. Simpson’s rule fits parabolas and improves far faster as readings are added. The smart-meter example gives 15.70 kWh by the trapezoid rule and 15.80 kWh by Simpson’s.",
+      out: "Energy using trapezoidal rule: 15.700 kWh\nEnergy using Simpson's rule: 15.800 kWh\nDifference between estimates: 0.100 kWh",
+      ext: [
+        "Total rainfall from a storm",
+        "With a known exact total of 24.53 mm, hourly readings give 24.45 mm by Simpson’s rule; the trapezoid rule needs far more readings to match.",
+      ],
+    },
+    {
+      n: 17,
+      group: "Calculus and ODEs",
+      name: "Euler method",
+      concept:
+        "Step forward in time using the current rate of change: new value = old value + h × rate.",
+      params: [
+        {
+          id: "hi",
+          label: "Step size h (minutes)",
+          min: 0,
+          max: 7,
+          step: 1,
+          value: 3,
+          fmt: (v) => hOptions[v],
+        },
+      ],
+      compute(p) {
+        const h = hOptions[p.hi],
+          steps = Math.round(30 / h),
+          t = [],
+          T = [];
+        let cur = 90;
+        for (let i = 0; i <= steps; i++) {
+          t.push(i * h);
+          T.push(cur);
+          cur += h * (-0.12 * (cur - 25));
+        }
+        const exact = (x) => 25 + 65 * Math.exp(-0.12 * x),
+          last = T[T.length - 1];
+        return {
+          xlabel: "Time (minutes)",
+          ylabel: "Temperature (°C)",
+          xlim: [0, 30],
+          series: [
+            {
+              name: "Exact solution",
+              type: "line",
+              color: "ink",
+              pts: range(0, 30, 0.25).map((x) => [x, exact(x)]),
+            },
+            {
+              name: "Euler steps",
+              type: "line",
+              color: "blue",
+              pts: t.map((x, i) => [x, T[i]]),
+            },
+            {
+              name: "Euler points",
+              type: "dots",
+              color: "blue",
+              pts: t.map((x, i) => [x, T[i]]),
+            },
+          ],
+          readouts: [
+            ["Step size h", h + " min"],
+            ["Euler after 30 min", fx(last, 3) + " °C"],
+            ["Exact after 30 min", fx(exact(30), 3) + " °C"],
+            ["Error", fx(Math.abs(last - exact(30)), 4) + " °C"],
+          ],
+        };
+      },
+      meaning:
+        "The Euler curve follows the exact cooling curve but sits slightly below it, because each step uses the slope at its start while the real curve flattens. The error shrinks in proportion to h: ten times smaller steps give about ten times less error for ten times the work.",
+      out: "Euler temperature after 30 min: 26.40 C\nExact temperature after 30 min: 26.78 C\nFinal absolute error: 0.3720 C",
+      ext: [
+        "A simple epidemic (SIR)",
+        "An illustrative outbreak among 1000 people. Halving the contact rate cuts the peak from about 310 infected to 65 and the total infected from about 940 to 527.",
+      ],
+    },
+    {
+      n: 18,
+      group: "Calculus and ODEs",
+      name: "ODEs with SciPy",
+      concept:
+        "A solver chooses its own step sizes, so you describe the equation and ask for the answer.",
+      params: [
+        {
+          id: "c",
+          label: "Damping c",
+          min: 0.5,
+          max: 16,
+          step: 0.5,
+          value: 1,
+          fmt: (v) => v.toFixed(1),
+        },
+      ],
+      compute(p) {
+        const xs = springRun(p.c),
+          cm = xs.map((v) => v * 100),
+          zeta = p.c / 10;
+        let last = 0;
+        xs.forEach((v, i) => {
+          if (Math.abs(v) > 0.005) last = i;
+        });
+        return {
+          xlabel: "Time (s)",
+          ylabel: "Suspension position (cm)",
+          xlim: [0, 6],
+          hlines: [0],
+          series: [
+            {
+              name: "Position after a 10 cm bump",
+              type: "line",
+              color: "blue",
+              pts: cm
+                .map((v, i) => [i * 0.005, v])
+                .filter((_, i) => i % 2 === 0),
+            },
+          ],
+          readouts: [
+            ["Damping ratio", fx(zeta, 2)],
+            [
+              "Overshoot below zero",
+              fx(Math.max(0, -Math.min(...cm)), 2) + " cm",
+            ],
+            ["Settles within 0.5 cm after", fx(last * 0.005, 2) + " s"],
+          ],
+          note: "The browser integrates this with a fixed-step Runge-Kutta method. The Python program uses scipy.integrate.solve_ivp with automatic step sizes and the same equation.",
+        };
+      },
+      meaning:
+        "Light damping keeps oscillating, a bouncy ride. A damping ratio of 1 (c = 10) returns to rest fastest without bouncing. Heavier damping is also bounce-free but slower. For the RC circuit in the program, the capacitor reaches 63 % of the supply after one time constant and 4.9663 V after 5 s.",
+      out: "Solver success: True\nCapacitor voltage at 5 s: 4.9663 V\nMaximum error against exact solution: 9.282e-10 V",
+      ext: [
+        "Vehicle suspension",
+        "A mass-spring-damper split into two first-order equations. Light damping bounces 7.3 cm below zero and takes 5.8 s to settle; critical damping settles in 0.95 s.",
+      ],
+    },
+    {
+      n: 19,
+      group: "Optimization and chance",
+      name: "Numerical optimization",
+      concept:
+        "Find the inputs that minimize a cost while still meeting a requirement.",
+      params: [
+        {
+          id: "cA",
+          label: "Cost of a Type A unit",
+          min: 4,
+          max: 20,
+          step: 0.5,
+          value: 12,
+          fmt: (v) => v.toFixed(1),
+        },
+      ],
+      compute(p) {
+        const rA = p.cA / 100,
+          rB = 18 / 170,
+          useA = rA < rB,
+          x = useA ? 10 : 0,
+          y = useA ? 0 : 1000 / 170,
+          cost = p.cA * x + 18 * y;
+        let best = null;
+        for (let a = 0; a < 20; a++)
+          for (let b = 0; b < 20; b++)
+            if (100 * a + 170 * b >= 1000) {
+              const c = p.cA * a + 18 * b;
+              if (!best || c < best[0]) best = [c, a, b];
+            }
+        return {
+          bars: {
+            cats: ["Type A", "Type B"],
+            values: [rA, rB],
+            fmt: (v) => v.toFixed(4),
+          },
+          ylabel: "Cost per unit of capacity",
+          readouts: [
+            ["Cheapest type", useA ? "Type A" : "Type B"],
+            ["Allocation (units)", "A " + fx(x, 2) + ", B " + fx(y, 2)],
+            ["Minimum cost", fx(cost, 2)],
+            [
+              "With whole servers",
+              best[1] + " A, " + best[2] + " B for " + fx(best[0], 0),
+            ],
+          ],
+        };
+      },
+      meaning:
+        "The cheapest plan buys all its capacity from whichever type costs less per unit of capacity. At A = 12 that is Type B (0.106 against 0.120), so the plan is 5.882 units of B at a cost of 105.88, or 6 whole servers for 108. Lower A below 10.6 per unit and the plan switches to Type A.",
+      out: "Type A allocation: 0.000\nType B allocation: 5.882\nMinimum planning cost: 105.88\nBest nearby integer solution: (108, 0, 6, 1020)",
+      ext: [
+        "Cheapest fence for a farm",
+        "A 500 m² plot with a river along one side needs the least fence when it is twice as long along the river as it is deep: 15.81 m by 31.62 m, 63.25 m of fence.",
+      ],
+    },
+    {
+      n: 20,
+      group: "Optimization and chance",
+      name: "Monte Carlo",
+      concept:
+        "Estimate a probability by running many random trials and counting how often the event happens.",
+      params: [
+        {
+          id: "cap",
+          label: "Server capacity",
+          min: 800,
+          max: 1400,
+          step: 25,
+          value: 1000,
+          fmt: (v) => v,
+        },
+        {
+          id: "lg",
+          label: "Number of simulations",
+          min: 2,
+          max: 5,
+          step: 0.25,
+          value: 4,
+          fmt: (v) => Math.round(10 ** v).toLocaleString("en-US"),
+        },
+      ],
+      compute(p) {
+        const N = Math.round(10 ** p.lg),
+          rnd = mulberry32(42),
+          pts = [],
+          marks = new Set(
+            range(1, 200, 1).map((i) =>
+              Math.max(1, Math.round(10 ** (1 + ((p.lg - 1) * i) / 200))),
+            ),
+          );
+        let hits = 0;
+        for (let i = 1; i <= N; i++) {
+          const u1 = rnd() || 1e-12,
+            u2 = rnd(),
+            dem =
+              850 +
+              120 * Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+          if (dem > p.cap) hits++;
+          if (marks.has(i) || i === N)
+            pts.push([Math.log10(i), (hits / i) * 100]);
+        }
+        const ex = normSf(p.cap, 850, 120) * 100,
+          est = (hits / N) * 100,
+          se =
+            Math.sqrt(Math.max((est / 100) * (1 - est / 100), 1e-9) / N) * 100;
+        return {
+          xlabel: "Simulations (log10 scale: 2 = 100, 5 = 100,000)",
+          ylabel: "Estimated overload probability (%)",
+          xlim: [1, 5],
+          hlines: [ex],
+          refLabel: "exact",
+          series: [
+            { name: "Running estimate", type: "line", color: "blue", pts },
+          ],
+          readouts: [
+            ["Simulations", N.toLocaleString("en-US")],
+            ["Estimated probability", fx(est, 3) + " %"],
+            ["Exact probability", fx(ex, 3) + " %"],
+            ["Typical sampling error", "± " + fx(se, 3) + " %"],
+          ],
+          note: "The browser uses its own random number generator, so figures differ slightly from the NumPy run (10.616 % for the original program), but they converge on the same exact value.",
+        };
+      },
+      meaning:
+        "With few simulations the running estimate jumps about; with more it settles near the exact answer, and the sampling error shrinks roughly as one over the square root of the number of runs. A capacity of 1000 overloads about one time in ten, which may be too risky.",
+      out: "Estimated overload probability: 10.6160%\nNumber of overload cases: 10616 out of 100000",
+      ext: [
+        "Bus journey time",
+        "Three uncertain legs of a trip give a 14.7 % chance of taking more than 90 minutes, although the average trip is 81.7 minutes. Allow about 95 minutes to be safe.",
+      ],
+    },
+  ];
+  const FILES = {
+    2: ["Task_02_numpy_arrays", "Task_02_ext_soil_moisture"],
+    3: ["Task_03_vectorization", "Task_03_ext_transactions"],
+    4: ["Task_04_numerical_errors", "Task_04_ext_accumulated_error"],
+    5: ["Task_05_matrix_algebra", "Task_05_ext_robot_arm"],
+    6: ["Task_06_linear_systems", "Task_06_ext_circuit"],
+    7: ["Task_07_gaussian_lu", "Task_07_ext_heat_rod_lu"],
+    8: ["Task_08_iterative_linear", "Task_08_ext_grid_size"],
+    9: ["Task_09_eigenvalues", "Task_09_ext_pagerank"],
+    10: ["Task_10_bisection_fixed_point", "Task_10_ext_break_even"],
+    11: ["Task_11_newton_secant", "Task_11_ext_loan_rate"],
+    12: ["Task_12_nonlinear_equations", "Task_12_ext_two_towers"],
+    13: ["Task_13_interpolation", "Task_13_ext_river_gauge"],
+    14: ["Task_14_curve_fitting", "Task_14_ext_growth_curve"],
+    15: ["Task_15_numerical_differentiation", "Task_15_ext_acceleration"],
+    16: ["Task_16_numerical_integration", "Task_16_ext_rainfall"],
+    17: ["Task_17_euler_ode", "Task_17_ext_sir_epidemic"],
+    18: ["Task_18_scipy_ode", "Task_18_ext_spring_damper"],
+    19: ["Task_19_optimization", "Task_19_ext_fencing"],
+    20: ["Task_20_monte_carlo", "Task_20_ext_trip_time"],
+  };
+</script>
+
+<script id="ui">
+  const $ = (s) => document.querySelector(s);
+  const esc = (s) =>
+    String(s).replace(
+      /[&<>]/g,
+      (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c],
+    );
+  const state = {};
+
+  function niceTicks(min, max, count) {
+    const span = max - min || 1,
+      raw = span / count,
+      mag = 10 ** Math.floor(Math.log10(raw)),
+      nrm = raw / mag;
+    const step = (nrm < 1.5 ? 1 : nrm < 3 ? 2 : nrm < 7 ? 5 : 10) * mag,
+      out = [];
+    for (
+      let v = Math.ceil(min / step - 1e-9) * step;
+      v <= max + step * 1e-9;
+      v += step
+    )
+      out.push(+v.toFixed(12));
+    return out;
+  }
+  const tickText = (v) => {
+    const a = Math.abs(v);
+    if (a !== 0 && (a >= 100000 || a < 0.001)) return v.toExponential(0);
+    return String(+v.toPrecision(6));
+  };
+
+  function drawPlot(spec) {
+    const W = 760,
+      H = 440,
+      m = { l: 64, r: 22, t: 18, b: 58 },
+      pw = W - m.l - m.r,
+      ph = H - m.t - m.b;
+    let xmin,
+      xmax,
+      ymin,
+      ymax,
+      cats = null;
+    if (spec.bars) {
+      cats = spec.bars.cats;
+      xmin = -0.6;
+      xmax = cats.length - 0.4;
+      ymin = 0;
+      ymax = Math.max(...spec.bars.values) * 1.18 || 1;
+    } else {
+      const xs = [],
+        ys = [];
+      spec.series.forEach((s) =>
+        s.pts.forEach((p) => {
+          if (isFinite(p[0]) && isFinite(p[1])) {
+            xs.push(p[0]);
+            ys.push(p[1]);
+          }
+        }),
+      );
+      (spec.hlines || []).forEach((v) => ys.push(v));
+      (spec.vlines || []).forEach((v) => xs.push(v));
+      xmin = Math.min(...xs);
+      xmax = Math.max(...xs);
+      ymin = Math.min(...ys);
+      ymax = Math.max(...ys);
+      if (spec.xlim) [xmin, xmax] = spec.xlim;
+      if (spec.ylim) [ymin, ymax] = spec.ylim;
+      else {
+        const pad = (ymax - ymin || 1) * 0.07;
+        ymin -= pad;
+        ymax += pad;
+      }
+      if (xmax === xmin) {
+        xmin -= 1;
+        xmax += 1;
+      }
+    }
+    if (spec.equal) {
+      const k = Math.max((xmax - xmin) / pw, (ymax - ymin) / ph),
+        cx = (xmin + xmax) / 2,
+        cy = (ymin + ymax) / 2;
+      xmin = cx - (k * pw) / 2;
+      xmax = cx + (k * pw) / 2;
+      ymin = cy - (k * ph) / 2;
+      ymax = cy + (k * ph) / 2;
+    }
+    const X = (v) => m.l + ((v - xmin) / (xmax - xmin)) * pw,
+      Y = (v) => m.t + ph - ((v - ymin) / (ymax - ymin)) * ph;
+    let g = "";
+    niceTicks(ymin, ymax, 6).forEach((v) => {
+      g += `<line class="grid" x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${m.l - 8}" y="${Y(v) + 4}" text-anchor="end">${tickText(v)}</text>`;
+    });
+    if (cats)
+      cats.forEach((c, i) => {
+        g += `<text x="${X(i)}" y="${H - m.b + 20}" text-anchor="middle" class="lbl">${esc(c)}</text>`;
+      });
+    else
+      niceTicks(xmin, xmax, 8).forEach((v) => {
+        g += `<line class="grid" x1="${X(v)}" x2="${X(v)}" y1="${m.t}" y2="${m.t + ph}"/><text x="${X(v)}" y="${H - m.b + 20}" text-anchor="middle">${tickText(v)}</text>`;
+      });
+    g += `<line class="axis" x1="${m.l}" x2="${m.l}" y1="${m.t}" y2="${m.t + ph}"/><line class="axis" x1="${m.l}" x2="${W - m.r}" y1="${m.t + ph}" y2="${m.t + ph}"/>`;
+    g += `<text class="lbl" x="${m.l + pw / 2}" y="${H - 10}" text-anchor="middle">${esc(spec.xlabel || "")}</text><text class="lbl" transform="translate(16 ${m.t + ph / 2}) rotate(-90)" text-anchor="middle">${esc(spec.ylabel || "")}</text>`;
+    let body = "";
+    if (cats) {
+      const bw = Math.min(110, (pw / cats.length) * 0.55);
+      spec.bars.values.forEach((v, i) => {
+        body += `<rect class="f-blue" x="${X(i) - bw / 2}" y="${Y(v)}" width="${bw}" height="${Math.max(0, Y(0) - Y(v))}" rx="2"/><text class="lbl" x="${X(i)}" y="${Y(v) - 8}" text-anchor="middle" style="font-weight:700">${esc(spec.bars.fmt ? spec.bars.fmt(v) : v)}</text>`;
+      });
+    } else {
+      (spec.hlines || []).forEach((v) => {
+        if (v >= ymin && v <= ymax)
+          body += `<line class="${v === 0 ? "zero" : "ref"}" x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}"/>`;
+      });
+      (spec.vlines || []).forEach((v) => {
+        body += `<line class="ref" x1="${X(v)}" x2="${X(v)}" y1="${m.t}" y2="${m.t + ph}"/>`;
+      });
+      spec.series.forEach((s) => {
+        const pts = s.pts.filter((p) => isFinite(p[0]) && isFinite(p[1])),
+          d = pts.map((p) => `${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`);
+        if (s.type === "line" || s.type === "poly")
+          body += `<polyline fill="none" class="s-${s.color}" stroke-width="${s.type === "poly" ? 2.4 : 2.6}" ${s.dash ? 'stroke-dasharray="6 4"' : ""} stroke-linejoin="round" stroke-linecap="round" points="${d.join(" ")}"/>`;
+        if (s.type === "dots")
+          pts.forEach((p) => {
+            body += `<circle class="f-${s.color}" cx="${X(p[0])}" cy="${Y(p[1])}" r="5" stroke="var(--panel)" stroke-width="1.5"/>`;
+          });
+        if (s.type === "ring")
+          pts.forEach((p) => {
+            body += `<circle fill="none" class="s-${s.color}" stroke-width="3" cx="${X(p[0])}" cy="${Y(p[1])}" r="8"/>`;
+          });
+      });
+    }
+    let legend = "";
+    if (!cats) {
+      const items = spec.series.filter((s) => s.name);
+      items.forEach((s, i) => {
+        const y = m.t + 14 + i * 18,
+          w = s.name.length * 6.6;
+        legend += `<g class="legend">${s.type === "dots" || s.type === "ring" ? `<circle cx="${W - m.r - 14 - w - 16}" cy="${y - 4}" r="4.5" class="f-${s.color}"/>` : `<line class="s-${s.color}" stroke-width="3" x1="${W - m.r - 14 - w - 28}" x2="${W - m.r - 14 - w - 8}" y1="${y - 4}" y2="${y - 4}"/>`}<text x="${W - m.r - 10}" y="${y}" text-anchor="end">${esc(s.name)}</text></g>`;
+      });
+    }
+    return `<svg class="plot" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(spec.title || "Interactive plot")}"><defs><clipPath id="clip"><rect x="${m.l}" y="${m.t}" width="${pw}" height="${ph}"/></clipPath></defs>${g}<g clip-path="url(#clip)">${body}</g>${legend}</svg>`;
+  }
+
+  function show(n) {
+    const t = TASKS.find((k) => k.n === n) || TASKS.find((k) => k.n === 17);
+    state.cur = t;
+    state[t.n] =
+      state[t.n] || Object.fromEntries(t.params.map((p) => [p.id, p.value]));
+    const files = FILES[t.n],
+      ctl = t.params
+        .map(
+          (p) =>
+            `<div class="ctl"><label for="p-${p.id}">${esc(p.label)}</label><output id="o-${p.id}" for="p-${p.id}"></output><input type="range" id="p-${p.id}" min="${p.min}" max="${p.max}" step="${p.step}" value="${state[t.n][p.id]}"></div>`,
+        )
+        .join("");
+    $("#task").innerHTML =
+      `<div class="head"><h2><span class="tn">${t.n}</span>${esc(t.name)}</h2><p>${esc(t.concept)}</p></div>
+    <div class="plotbox" id="plot"></div>
+    <div class="panel"><div class="controls">${ctl || '<p class="nocontrols">This task shows measured results, so there are no sliders.</p>'}</div><div><dl class="read" id="read"></dl><p class="note" id="note" hidden></p></div></div>
+    <div class="text"><section><h3>What the result means</h3><p>${esc(t.meaning)}</p></section>
+    <section><h3>New case: ${esc(t.ext[0])}</h3><p>${esc(t.ext[1])}</p></section>
+    <section><h3>Original program output</h3><pre>${esc(t.out)}</pre></section></div>
+    <div class="files"><span>Code <code>code/${files[0]}.py</code></span><span>New case <code>extensions/${files[1]}.py</code></span><span>Write-up <code>docs/${files[0]}.md</code></span></div>`;
+    t.params.forEach((p) =>
+      $("#p-" + p.id).addEventListener("input", (e) => {
+        state[t.n][p.id] = +e.target.value;
+        update();
+      }),
+    );
+    update();
+    document
+      .querySelectorAll(".rail a")
+      .forEach((a) =>
+        a.setAttribute("aria-current", a.dataset.n == t.n ? "page" : "false"),
+      );
+    $("#jump").value = t.n;
+    document.title = "BIT 2118 Workbook";
+  }
+  function update() {
+    const t = state.cur,
+      p = state[t.n],
+      r = t.compute(p);
+    r.title = `Task ${t.n}: ${t.name}`;
+    $("#plot").innerHTML = drawPlot(r);
+    t.params.forEach((q) => {
+      $("#o-" + q.id).textContent = q.fmt(p[q.id]);
+    });
+    $("#read").innerHTML = r.readouts
+      .map(([a, b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`)
+      .join("");
+    const note = $("#note");
+    note.hidden = !r.note;
+    note.textContent = r.note || "";
+  }
+  function buildNav() {
+    let html = "",
+      last = "";
+    TASKS.forEach((t) => {
+      if (t.group !== last) {
+        html += `<h2>${esc(t.group)}</h2>`;
+        last = t.group;
+      }
+      html += `<a href="#task-${t.n}" data-n="${t.n}"><span class="n">${t.n}</span><span>${esc(t.name)}</span></a>`;
+    });
+    $("#rail").innerHTML = html;
+    $("#jump").innerHTML = TASKS.map(
+      (t) => `<option value="${t.n}">Task ${t.n}: ${esc(t.name)}</option>`,
+    ).join("");
+    $("#jump").addEventListener("change", (e) => {
+      location.hash = "task-" + e.target.value;
+    });
+  }
+  function route() {
+    const m = /^#task-(\d+)$/.exec(location.hash);
+    show(m ? +m[1] : 17);
+  }
+  buildNav();
+  window.addEventListener("hashchange", route);
+  route();
+</script>

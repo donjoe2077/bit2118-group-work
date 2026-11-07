@@ -1,0 +1,8 @@
+PART 1 - heat balance T - 25 - A*exp(-T/20) = 0
+A=10: bisection T=27.525211 (38 halvings) | fixed-point T=27.525211 (13 iterations)
+A=20: bisection T=29.561521 (38 halvings) | fixed-point T=29.561521 (17 iterations)
+A=30: bisection T=31.279175 (38 halvings) | fixed-point T=31.279175 (22 iterations)
+
+PART 2 - break-even points (profit = 0)
+Base price 100: profitable between q=28.9 and q=2304.4 units; best volume ~1167 units with profit 38,833
+Base price 90: profitable between q=33.9 and q=1966.1 units; best volume ~1000 units with profit 28,000

@@ -1,0 +1,12 @@
+PART 1 - tolerance and boundary change on the 5-point rod
+tol=1e-04: Jacobi  86 it | Gauss-Seidel  43 it | GS max error 2.88e-04
+tol=1e-08: Jacobi 150 it | Gauss-Seidel  75 it | GS max error 2.89e-08
+tol=1e-12: Jacobi 214 it | Gauss-Seidel 107 it | GS max error 2.88e-12
+Left boundary 80 C -> [70. 60. 50. 40. 30.]
+
+PART 2 - iterations needed (tol=1e-8) as the rod gets longer
+   n   Jacobi  Gauss-Seidel  max error (GS)
+   5      150            75        2.89e-08
+  10      486           245        1.11e-07
+  20     1672           842        4.38e-07
+  40     5935          2993        1.69e-06

@@ -1,0 +1,15 @@
+PART 1 - rotate by 90 degrees then scale (2, 1.5)
+Transformed points:
+ [[ 0.   0. ]
+ [ 0.   2. ]
+ [-1.5  2. ]
+ [-1.5  0. ]]
+Determinant: 3.0 (area scale factor = 2 x 1.5 = 3, rotation does not change area)
+
+PART 2 - two-link arm (L1=0.5 m, L2=0.3 m)
+theta1=  0, theta2=   0: elbow=(0.500,0.000) tip=(0.800,0.000) distance from base=0.800 m
+theta1= 30, theta2=  45: elbow=(0.433,0.250) tip=(0.511,0.540) distance from base=0.743 m
+theta1= 90, theta2= -90: elbow=(0.000,0.500) tip=(0.300,0.500) distance from base=0.583 m
+theta1= 45, theta2= 180: elbow=(0.354,0.354) tip=(0.141,0.141) distance from base=0.200 m
+Maximum reach = 0.80 m, minimum reach = 0.20 m
+Distance from base for elbow angles 0..180 deg: [0.8   0.774 0.7   0.583 0.436 0.283 0.2  ]

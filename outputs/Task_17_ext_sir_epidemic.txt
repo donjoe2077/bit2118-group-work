@@ -1,0 +1,10 @@
+PART 1 - cooling after 30 min (exact 26.7760 C)
+h= 5.0: Euler= 25.2662 C, error=1.5098 C
+h= 2.0: Euler= 26.0595 C, error=0.7165 C
+h= 1.0: Euler= 26.4041 C, error=0.3720 C
+h= 0.1: Euler= 26.7378 C, error=0.0383 C
+
+PART 2 - SIR model (population 1000, beta=0.3, gamma=0.1, R0=3.0)
+h=1.0: peak infected= 312.7 on day  41.0, never-infected at day 160=  53.3, recovered= 946.7
+h=0.1: peak infected= 302.0 on day  38.6, never-infected at day 160=  58.8, recovered= 941.1
+With beta=0.15 (R0=1.5): peak infected=64.6, total ever infected by day 160=527

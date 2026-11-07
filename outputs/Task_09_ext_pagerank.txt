@@ -1,0 +1,18 @@
+PART 1 - adding a link between A and D
+      original: dominant eigenvalue=2.5616, importance A,B,C,D = [0.2192 0.2808 0.2808 0.2192]
+ with A-D link: dominant eigenvalue=3.0000, importance A,B,C,D = [0.25 0.25 0.25 0.25]
+
+PART 2 - PageRank
+damping 0.85: dominant eigenvalue=1.0000
+   Blog    0.3498
+   Home    0.3273
+   News    0.1691
+   Shop    0.0869
+   Contact 0.0669
+damping 0.5: dominant eigenvalue=1.0000
+   Blog    0.2835
+   Home    0.2418
+   Shop    0.1714
+   News    0.1604
+   Contact 0.1429
+Power iteration matches eigenvector: True

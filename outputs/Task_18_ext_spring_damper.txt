@@ -1,0 +1,9 @@
+PART 1 - RC charging, voltage after 1 s
+R=1000 ohm, C=1 mF, time constant=1.0 s: V(1s)=3.1606 V (exact 3.1606)
+R=1000 ohm, C=2 mF, time constant=2.0 s: V(1s)=1.9673 V (exact 1.9673)
+R= 500 ohm, C=1 mF, time constant=0.5 s: V(1s)=4.3233 V (exact 4.3233)
+
+PART 2 - suspension after a 0.10 m bump (starts at x=0.10 m, v=0)
+c= 1.0 (   light damping, damping ratio 0.10): overshoot below zero= 7.29 cm, settles within 0.5 cm after 5.79 s
+c=10.0 (critical damping, damping ratio 1.00): overshoot below zero= 0.00 cm, settles within 0.5 cm after 0.95 s
+c=14.0 (   heavy damping, damping ratio 1.40): overshoot below zero= 0.00 cm, settles within 0.5 cm after 1.52 s

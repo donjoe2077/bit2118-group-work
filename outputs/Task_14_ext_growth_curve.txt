@@ -1,0 +1,12 @@
+PART 1 - polynomial degree
+degree 1: RMSE= 18.83 ms | prediction at 400 users=  312.9 ms
+degree 2: RMSE=  1.55 ms | prediction at 400 users=  377.9 ms
+degree 3: RMSE=  0.14 ms | prediction at 400 users=  387.9 ms
+
+PART 2 - plant growth (cm)
+Days  : [0, 5, 10, 15, 20, 25, 30, 35, 40]
+Height: [3.2, 8.2, 16.5, 32.9, 59.1, 83.3, 103.1, 115.1, 115.8]
+Logistic fit : max height L=121.1 cm, rate k=0.179/day, midpoint day 20.4, RMSE=1.09 cm
+Exponential  : a=19.16, k=0.049/day, RMSE=15.12 cm
+Day 50: logistic predicts 120.6 cm | exponential predicts 222 cm
+Day 60: logistic predicts 121.0 cm | exponential predicts 362 cm

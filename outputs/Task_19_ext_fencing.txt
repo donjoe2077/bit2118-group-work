@@ -1,0 +1,10 @@
+PART 1 - cloud cost optimisation, Type A unit cost varies (Type B = 18)
+A costs 12: A=0.000, B=5.882, cost=105.88 | whole servers (cost, A, B, capacity)=(108, 0, 6, 1020)
+A costs  8: A=10.000, B=0.000, cost=80.00 | whole servers (cost, A, B, capacity)=(80, 10, 0, 1000)
+Cost per unit of capacity: A = 0.1200, B = 0.1059 -> the cheaper ratio wins.
+At A=8 the ratio is 0.0800 < 0.1059, so the plan switches entirely to Type A.
+
+PART 2 - fenced farm plot, area 500 m^2, river on one side
+Optimizer: x=15.811 m, y=31.623 m, fence length=63.246 m, converged=True
+Analytic : x=sqrt(250)=15.811 m, y=2x=31.623 m, length=4*sqrt(250)=63.246 m
+A naive 10 m x 50 m plot needs 70 m of fence (10.7% more).

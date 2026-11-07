@@ -1,0 +1,11 @@
+PART 1 - linearity of Ax=b
+x for b       : [5.3171 5.2683 4.7561]
+x for 2*b     : [10.6341 10.5366  9.5122] (exactly double)
+x for b + b2  : [5.6829 5.7317 5.2439]
+
+PART 2 - heat in a rod, 300 nodes x 300 time steps
+Same answer from both methods: True
+Peak temperature: 100.0 C -> 31.73 C after 300 steps
+Total heat (sum of temps): 2000.0 -> 2000.0 (unchanged: the spreading heat has not yet reached the cold ends)
+Hot region after 300 steps spans 132 nodes (was 20)
+np.linalg.solve every step: 0.387 s | LU factor once: 0.110 s | speed-up ~3.5x

@@ -1,0 +1,11 @@
+PART 1 - exact energy = 18.11155 kWh
+ 4 samples: trapezoid=17.54256 (err 5.7e-01) | Simpson=18.23538 (err 1.2e-01)
+ 7 samples: trapezoid=17.97128 (err 1.4e-01) | Simpson=18.11419 (err 2.6e-03)
+13 samples: trapezoid=18.07660 (err 3.5e-02) | Simpson=18.11171 (err 1.6e-04)
+
+PART 2 - rainfall total (exact = 24.5274 mm)
+ 4 readings: trapezoid=20.6418 mm (err 3.89e+00) | Simpson=23.5852 mm (err 9.42e-01)
+ 7 readings: trapezoid=23.4944 mm (err 1.03e+00) | Simpson=24.4453 mm (err 8.21e-02)
+13 readings: trapezoid=24.2650 mm (err 2.62e-01) | Simpson=24.5219 mm (err 5.47e-03)
+25 readings: trapezoid=24.4615 mm (err 6.58e-02) | Simpson=24.5270 mm (err 3.47e-04)
+More frequent readings shrink the error; Simpson improves much faster than the trapezoid rule.
